@@ -41,6 +41,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         xvfb \
         zlib1g && \
     
+    service nginx stop && \
     rm -rf /var/lib/apt/lists/*
 
 COPY config /app/onlyoffice/setup/config/
@@ -53,11 +54,12 @@ ARG PRODUCT_NAME=onlyoffice-documentserver
 
 RUN echo "$REPO_URL" | tee /etc/apt/sources.list.d/onlyoffice.list && \
     apt-get -y update && \
-    apt-get -yq install $PRODUCT_NAME && \
+    apt-get download onlyoffice-documentserver && \
+    dpkg --force-all -i *.deb && \
     chmod 755 /app/onlyoffice/*.sh && \
     rm -rf /var/log/onlyoffice && \
     rm -rf /var/lib/apt/lists/*
 
-VOLUME /var/log/onlyoffice /var/lib/onlyoffice /var/www/onlyoffice/Data /usr/share/fonts/truetype/custom
+VOLUME /var/log/onlyoffice /var/lib/onlyoffice /var/www/onlyoffice/Data /var/lib/postgresql /usr/share/fonts/truetype/custom
 
 ENTRYPOINT /app/onlyoffice/run-document-server.sh
