@@ -42,7 +42,10 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         supervisor \
         xvfb \
         zlib1g && \
-    
+    sudo -u postgres psql -c "CREATE DATABASE onlyoffice;" && \
+    sudo -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';" && \
+    sudo -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;" && \ 
+    service postgresql stop && \
     service redis-server stop && \
     service rabbitmq-server stop && \
     service supervisor stop && \
@@ -52,7 +55,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 COPY config /app/onlyoffice/setup/config/
 COPY run-document-server.sh /app/onlyoffice/run-document-server.sh
 
-EXPOSE 80
+EXPOSE 80 443
 
 ARG REPO_URL="deb http://download.onlyoffice.com/repo/debian squeeze main"
 ARG PRODUCT_NAME=onlyoffice-documentserver
