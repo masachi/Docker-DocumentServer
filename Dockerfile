@@ -32,8 +32,6 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         netcat \
         nginx-extras \
         nodejs \
-        postgresql \
-        postgresql-client \
         pwgen \
         rabbitmq-server \
         redis-server \
@@ -42,10 +40,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         supervisor \
         xvfb \
         zlib1g && \
-    sudo -u postgres psql -c "CREATE DATABASE onlyoffice;" && \
-    sudo -u postgres psql -c "CREATE USER onlyoffice WITH password 'onlyoffice';" && \
-    sudo -u postgres psql -c "GRANT ALL privileges ON DATABASE onlyoffice TO onlyoffice;" && \ 
-    service postgresql stop && \
+    
     service redis-server stop && \
     service rabbitmq-server stop && \
     service supervisor stop && \
@@ -55,21 +50,19 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
 COPY config /app/onlyoffice/setup/config/
 COPY run-document-server.sh /app/onlyoffice/run-document-server.sh
 
-EXPOSE 80 443
+EXPOSE 80
 
 ARG REPO_URL="deb http://download.onlyoffice.com/repo/debian squeeze main"
 ARG PRODUCT_NAME=onlyoffice-documentserver
 
 RUN echo "$REPO_URL" | tee /etc/apt/sources.list.d/onlyoffice.list && \
     apt-get -y update && \
-    service postgresql start && \
     apt-get -yq install $PRODUCT_NAME && \
-    service postgresql stop && \
     service supervisor stop && \
     chmod 755 /app/onlyoffice/*.sh && \
     rm -rf /var/log/onlyoffice && \
     rm -rf /var/lib/apt/lists/*
 
-VOLUME /var/log/onlyoffice /var/lib/onlyoffice /var/www/onlyoffice/Data /var/lib/postgresql /usr/share/fonts/truetype/custom
+VOLUME /var/log/onlyoffice /var/lib/onlyoffice /var/www/onlyoffice/Data /usr/share/fonts/truetype/custom
 
 ENTRYPOINT /app/onlyoffice/run-document-server.sh
