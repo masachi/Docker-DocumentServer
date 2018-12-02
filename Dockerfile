@@ -41,6 +41,7 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         xvfb \
         zlib1g && \
     
+    
     service redis-server stop && \
     service rabbitmq-server stop && \
     service supervisor stop && \
