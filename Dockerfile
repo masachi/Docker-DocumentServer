@@ -32,6 +32,8 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         netcat \
         nginx-extras \
         nodejs \
+        postgresql \
+        postgresql-client \
         pwgen \
         rabbitmq-server \
         redis-server \
@@ -41,6 +43,9 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
         xvfb \
         zlib1g && \
     
+    service redis-server stop && \
+    service rabbitmq-server stop && \
+    service supervisor stop && \
     service nginx stop && \
     rm -rf /var/lib/apt/lists/*
 
@@ -54,8 +59,10 @@ ARG PRODUCT_NAME=onlyoffice-documentserver
 
 RUN echo "$REPO_URL" | tee /etc/apt/sources.list.d/onlyoffice.list && \
     apt-get -y update && \
-    apt-get download onlyoffice-documentserver && \
-    dpkg --force-all -i *.deb && \
+    service postgresql start && \
+    apt-get -yq install $PRODUCT_NAME && \
+    service postgresql stop && \
+    service supervisor stop && \
     chmod 755 /app/onlyoffice/*.sh && \
     rm -rf /var/log/onlyoffice && \
     rm -rf /var/lib/apt/lists/*
