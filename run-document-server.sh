@@ -38,8 +38,8 @@ JWT_ENABLED=${JWT_ENABLED:-false}
 JWT_SECRET=${JWT_SECRET:-secret}
 JWT_HEADER=${JWT_HEADER:-Authorization}
 
-ONLYOFFICE_DEFAULT_CONFIG=${CONF_DIR}/local.json
-# ONLYOFFICE_DEFAULT_CONFIG=/app/onlyoffice/setup/config/config.json
+# ONLYOFFICE_DEFAULT_CONFIG=${CONF_DIR}/local.json
+ONLYOFFICE_DEFAULT_CONFIG=/app/onlyoffice/setup/config/config.json
 ONLYOFFICE_LOG4JS_CONFIG=${CONF_DIR}/log4js/production.json
 ONLYOFFICE_EXAMPLE_CONFIG=${CONF_DIR}-example/local.json
 
