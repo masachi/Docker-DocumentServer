@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-LABEL maintainer Ascensio System SIA <support@onlyoffice.com>
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8 DEBIAN_FRONTEND=noninteractive
 
@@ -53,9 +52,10 @@ RUN echo "#!/bin/sh\nexit 0" > /usr/sbin/policy-rc.d && \
     rm -rf /var/lib/apt/lists/*
 
 COPY config /app/onlyoffice/setup/config/
+COPY config.json /app/onlyoffice/setup/config/config.json
 COPY run-document-server.sh /app/onlyoffice/run-document-server.sh
 
-EXPOSE 80 443
+EXPOSE 80 1936
 
 ARG REPO_URL="deb http://download.onlyoffice.com/repo/debian squeeze main"
 ARG PRODUCT_NAME=onlyoffice-documentserver
