@@ -2,7 +2,8 @@
   "services": {
     "CoAuthoring": {
       "sql": {
-        "dbHost": "postgress",
+        "dbHost": "127.0.0.1",
+        "dbPort": "5432",
         "dbName": "onlyoffice",
         "dbUser": "admin",
         "dbPass": "P@ssw0rd"
