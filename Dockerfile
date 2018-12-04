@@ -55,7 +55,7 @@ COPY config /app/onlyoffice/setup/config/
 COPY config.json /app/onlyoffice/setup/config/config.json
 COPY run-document-server.sh /app/onlyoffice/run-document-server.sh
 
-EXPOSE 80 1936
+EXPOSE 80 3433
 
 ARG REPO_URL="deb http://download.onlyoffice.com/repo/debian squeeze main"
 ARG PRODUCT_NAME=onlyoffice-documentserver
